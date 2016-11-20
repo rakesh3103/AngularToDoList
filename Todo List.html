@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo List</title>
+<link rel="icon" href="todoicon.png">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+<script>
+function todoCtrl($scope){
+    $scope.todoList=[];
+	$scope.toggleAll= false;
+	$scope.addtoList = function(){
+	 if($scope.todoInput){
+	   $scope.todoList.push({"todoText": $scope.todoInput, "done": false});
+	   $scope.todoInput="";
+	   }
+	
+	}
+	
+	$scope.remove = function(){
+		var oldList = $scope.todoList;
+		$scope.todoList = [];
+		angular.forEach(oldList, function(x){
+			if(!x.done){
+				$scope.todoList.push(x);
+			}
+		
+		
+		});
+		  $scope.toggleAll = false;
+	
+	}
+	
+	$scope.getNumber = function(){
+		
+		return $scope.todoList.length;
+ 	
+	}
+	
+	  $scope.toggleChecks = function(){
+  //alert("In toggle");
+	//alert("toggle is: "+ $scope.toggleAll);
+     angular.forEach($scope.todoList, function(x){
+       
+		x.done = $scope.toggleAll;
+	});
+    /*
+    if($scope.toggleAll){
+	alert("toggle is: "+ $scope.toggleAll);
+	  angular.forEach($scope.todoList, function(x){
+       
+		x.done = true;
+	});}else{
+	 alert("toggle is: "+ $scope.toggleAll);
+	 angular.forEach($scope.todoList, function(x){
+		x.done = false;
+		});
+	}*/
+    
+    
+  
+  }
+   $scope.remaining = function(){
+  //alert("In remaining");
+  count = 0 ;
+  angular.forEach($scope.todoList, function(x){
+  if(!x.done){
+  count++;
+  }
+  
+  
+  
+  });
+  return count;
+  }
+
+
+
+}
+
+
+
+
+</script>
+
+<style>
+body{
+background-color:  ;	
+font-size: 20px;	
+font-family: Sans-serif, Optima;
+}
+#content{
+background-color: ;
+padding: 20px 10px 50px 50px;
+
+}
+.done-true{
+ color: grey;
+ text-decoration: line-through;
+}
+#inputBox{
+
+width: 500px;
+height:50px;
+padding: 20px 20px 2px 10px;
+font-size: 20px;
+border: none;
+border-bottom: 1px solid black;	
+background-color: inherit;
+ }
+
+#inputBox:focus{
+
+outline: none;
+
+
+}
+#inputBox:focus{
+
+border-bottom: 3px solid green;
+
+}	
+
+.buttons{
+
+	width: 25%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+	font-size: 20px;
+}
+#checkAll{
+
+padding:20px 5px 20px 10px;
+
+}
+#items{
+
+padding: 5px 5px 10px 20px;
+}
+
+
+
+
+</style>
+</head>
+
+
+
+
+
+<body ng-app="">
+
+<div ng-controller="todoCtrl" id="content" >
+ <h2>Todo List</h2>
+ 
+ 
+ <div id="checkAll">
+    <input type="checkbox" ng-model="toggleAll" ng-change="toggleChecks()"/><span><b>Check All</b></span>
+    </div>
+	
+ <div ng-repeat="x in todoList" id="items">
+	
+	<input type="checkbox" ng-model="x.done"><span class="done-{{x.done}}"  ng-bind="x.todoText"></span>
+
+ </div>
+ <p>
+      You have {{remaining()}} out of {{getNumber()}} number of tasks left to do.
+    </p>
+ 
+ <button class="buttons" ng-click="remove()">Remove {{getNumber()-remaining()}} Items</button>
+ <br>
+ <br>
+ 
+ <form ng-submit="addtoList()">
+    <input type="text" ng-model="todoInput" id="inputBox" placeholder="Add New"><br><br>	
+    <input type="submit" class="buttons"value="Add New">	
+ 
+ </form>
+ <br><br>
+   
+ 
+ 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
